@@ -17,7 +17,7 @@ class MainPageViewController: UIViewController {
     setupHeroCollectionView()
     presenter = MainPagePresenter(view: self)
     presenter?.getHeroList()
-    // Do any additional setup after loading the view.
+    view.backgroundColor = UIColor(hex: "#1f3057")
   }
   
   private func setupHeroCollectionView() {
@@ -29,14 +29,20 @@ class MainPageViewController: UIViewController {
     heroCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
     
     heroCollectionView?.register(HeroCellView.self, forCellWithReuseIdentifier: "HeroCellView")
-    //heroCollectionView?.backgroundColor = UIColor.red
+    heroCollectionView?.backgroundColor = UIColor(hex: "#1f3057")
     
     heroCollectionView?.dataSource = self
     heroCollectionView?.delegate = self
     
+    heroCollectionView?.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(heroCollectionView ?? UICollectionView())
+    let margin = view.safeAreaLayoutGuide
+    
+    heroCollectionView?.topAnchor.constraint(equalTo: margin.topAnchor).isActive = true
+    heroCollectionView?.leadingAnchor.constraint(equalTo: margin.leadingAnchor).isActive = true
+    heroCollectionView?.trailingAnchor.constraint(equalTo: margin.trailingAnchor).isActive = true
+    heroCollectionView?.bottomAnchor.constraint(equalTo: margin.bottomAnchor).isActive = true
   }
-  
 }
 
 extension MainPageViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -60,7 +66,9 @@ extension MainPageViewController: MainPageViewable {
   }
   
   func displayError(message: String) {
-    let dialogMessage = UIAlertController(title: "Error 😞", message: message, preferredStyle: .alert)
-    self.present(dialogMessage, animated: true, completion: nil)
+    let alert = UIAlertController(title: "Error 😞", message: message, preferredStyle: .alert)
+    let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+    alert.addAction(action)
+    self.present(alert, animated: true, completion: nil)
   }
 }

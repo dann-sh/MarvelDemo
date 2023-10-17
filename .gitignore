@@ -1,0 +1,8 @@
+# Mac OS X Finder
+.DS_Store
+
+# Xcode
+MarvelDemo.xcworkspace/
+
+# Cocoapods
+Pods/

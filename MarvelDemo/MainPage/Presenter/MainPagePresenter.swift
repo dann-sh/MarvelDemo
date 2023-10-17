@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol MainPagePresentable: AnyObject {
+protocol MainPagePresentable {
   func getHeroList()
 }
 
-protocol MainPageViewable {
+protocol MainPageViewable: AnyObject {
   func pupulateHeros(heroes: [HeroData])
   func displayError(message: String)
 }
 
 class MainPagePresenter {
   private let networkService: NetworkService
-  private var view: MainPageViewable
+  private weak var view: MainPageViewable?
   
   init(view: MainPageViewable, networkService: NetworkService = NetworkService()) {
     self.view = view
@@ -33,9 +33,9 @@ extension MainPagePresenter: MainPagePresentable {
       DispatchQueue.main.async {
         switch result {
         case .success(let data):
-          self.view.pupulateHeros(heroes: data)
+          self.view?.pupulateHeros(heroes: data)
         case .failure(let error):
-          self.view.displayError(message: error.localizedDescription)
+          self.view?.displayError(message: error.localizedDescription)
         }
       }
     }
